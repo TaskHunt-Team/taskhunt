@@ -1,15 +1,16 @@
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freelancer Sign Up | Hire Talent</title>
+    <title>Client Sign Up | Join TaskHunt</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --primary: #0090E0; 
+            --primary: #0090E0;
             --primary-hover: #00A8FF;
             --bg-body: #ffffff;
             --text-main: #001e00;
@@ -17,6 +18,7 @@
             --border: #cbdfe9;
             --white: #ffffff;
             --shadow: 0 4px 12px rgba(0, 30, 0, 0.05);
+            --error: #dc3545;
         }
 
         * {
@@ -32,14 +34,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px;
             color: var(--text-main);
         }
 
         .signup-card {
             background: var(--white);
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             padding: 40px;
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -55,7 +57,6 @@
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 8px;
-            letter-spacing: -0.5px;
         }
 
         .subtitle {
@@ -86,8 +87,8 @@
         }
 
         .btn-social:hover {
-            background-color: #f0f7fb;
-            border-color: #0090E0;
+            background-color: #c3deec;
+            border-color: #d0e7f3;
         }
 
         .fa-google { color: #DB4437; }
@@ -97,7 +98,7 @@
             display: flex;
             align-items: center;
             margin: 24px 0;
-            color: #9dbcca;
+            color: #c1e0f1;
         }
 
         .divider::before, .divider::after {
@@ -130,31 +131,19 @@
             font-weight: 600;
         }
 
-        input, select, textarea {
+        input {
             width: 100%;
             padding: 11px 15px;
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 14px;
-            color: var(--text-main);
             outline: none;
             transition: all 0.2s;
         }
 
-        input:focus, select:focus, textarea:focus {
+        input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px #d0eefe;
-        }
-
-        textarea {
-            resize: none;
-            height: 80px;
-        }
-
-        input[type="file"] {
-            padding: 8px;
-            background: #f4f9fc;
-            cursor: pointer;
+            box-shadow: 0 0 0 3px #b7e3f9;
         }
 
         .checkbox-group {
@@ -202,10 +191,26 @@
             font-weight: 600;
         }
 
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
         @media (max-width: 480px) {
-            .signup-card { padding: 30px 20px; }
-            .form-row { grid-template-columns: 1fr; }
-            .social-container { grid-template-columns: 1fr; }
+            .signup-card {
+                padding: 30px 20px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .social-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -213,71 +218,95 @@
 
 <div class="signup-card">
     <header>
-        <h1>Sign up as a freelancer</h1>
-        <p class="subtitle">Create your freelancer account</p>
+        <h1>Sign up as a Client</h1>
+        <p class="subtitle">Create your profile and start hiring</p>
     </header>
 
     <div class="social-container">
-        <button class="btn-social">
+        <button class="btn-social" onclick="alert('Google login coming soon!')">
             <i class="fab fa-google"></i> Google
         </button>
-        <button class="btn-social">
+        <button class="btn-social" onclick="alert('Facebook login coming soon!')">
             <i class="fab fa-facebook-f"></i> Facebook
         </button>
     </div>
 
     <div class="divider">
-        <span>OR CONTINUE WITH EMAIL</span>
+        <span>OR SIGN UP WITH EMAIL</span>
     </div>
 
-    <form action="#">
+    <div id="errorMessage" class="error-message"></div>
+
+    <form id="signupForm" method="POST" action="process_signup.php">
+        <input type="hidden" name="user_type" value="client">
+        
         <div class="form-row">
             <div class="form-group">
-                <input type="text" placeholder="First Name" required>
+                <input type="text" name="first_name" id="firstName" placeholder="First Name" required>
             </div>
             <div class="form-group">
-                <input type="text" placeholder="Last Name" required>
+                <input type="text" name="last_name" id="lastName" placeholder="Last Name" required>
             </div>
-        </div>
-        <div class="form-group">
-                <input type="text" placeholder="Username" required>
-            </div>
-         <div class="form-group">
-            <input type="email" placeholder="Email" required>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <select required>
-                    <option value="" disabled selected>Skills</option>
-                    <option>Web Developer</option>
-                    <option>Mobile App Developer</option>
-                    <option>Frontend Developer</option>
-                    <option>Backend Developer</option>
-                    <option>Writing & Translation</option>
-                    <option>UI / UX Designer</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="text" placeholder="Country" required>
-            </div>
-        </div>
         <div class="form-group">
-            <input type="password" placeholder="Password (at least 8 characters) " required>
+            <input type="email" name="email" id="email" placeholder="Email Address" required>
         </div>
 
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="Password (at least 8 characters)" required>
+        </div>
+        
+        <div class="form-group">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        </div>
+        
         <label class="checkbox-group">
-            <input type="checkbox" required>
-            <span>I agree to the Terms of Service and<a href="../freelancer-privacy.html" style="color: #00A8FF;"> Privacy Policy</a></span>
+            <input type="checkbox" id="termsCheckbox" required>
+            <span>I agree to the <a href="#" style="color: #00A8FF;">Terms of Service</a> and <a href="#" style="color: #00A8FF;">Privacy Policy</a></span>
         </label>
 
         <button type="submit" class="btn-submit">Create My Account</button>
     </form>
 
     <footer>
-        Already have a client account? <a href="../login/login.html">Log In</a>
+        Already have an account? <a href="../login/login.php">Log In</a>
     </footer>
 </div>
+
+<script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        let password = document.getElementById('password').value;
+        let confirmPassword = document.getElementById('confirmPassword').value;
+        let errorDiv = document.getElementById('errorMessage');
+        
+        // التحقق من تطابق كلمة المرور
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '❌ كلمة المرور غير متطابقة!';
+            return false;
+        }
+        
+        // التحقق من طول كلمة المرور
+        if (password.length < 8) {
+            e.preventDefault();
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '❌ كلمة المرور يجب أن تكون 8 أحرف على الأقل!';
+            return false;
+        }
+        
+        // التحقق من الموافقة على الشروط
+        if (!document.getElementById('termsCheckbox').checked) {
+            e.preventDefault();
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '❌ يجب الموافقة على الشروط والأحكام!';
+            return false;
+        }
+        
+        errorDiv.style.display = 'none';
+    });
+</script>
 
 </body>
 </html>

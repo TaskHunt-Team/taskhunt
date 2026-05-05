@@ -1,60 +1,69 @@
-DROP DATABASE IF EXISTS TaskHunt;
-CREATE DATABASE TaskHunt;
-USE TaskHunt;
+CREATE DATABASE taskhunt;
+USE taskhunt;
 
--- USERS
+-- ================= USERS =================
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(50),
-    last_name VARCHAR(50),
-    username VARCHAR(50) UNIQUE,
+    name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
-    role ENUM('client','freelancer','admin'),
+    role ENUM('admin','freelancer','client'),
+    image VARCHAR(255) DEFAULT 'default.png',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- JOBS
-CREATE TABLE jobs (
+-- ================= PROFILES =================
+CREATE TABLE profiles (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    client_id INT,
-    title VARCHAR(255),
-    description TEXT,
-    budget INT,
-    hours INT,
-    tags VARCHAR(255),
-    location VARCHAR(100),
-    status ENUM('pending','approved','rejected') DEFAULT 'approved',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_id INT,
+    bio TEXT,
+    skills TEXT,
+    experience TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- PROPOSALS
+-- ================= SERVICES =================
+CREATE TABLE services (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(200),
+    description TEXT,
+    price DECIMAL(10,2),
+    image VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- ================= POSTS =================
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(200),
+    description TEXT,
+    budget DECIMAL(10,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- ================= PROPOSALS =================
 CREATE TABLE proposals (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    job_id INT,
+    post_id INT,
     freelancer_id INT,
     message TEXT,
-    price INT,
+    price DECIMAL(10,2),
     status ENUM('pending','accepted','rejected') DEFAULT 'pending',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (freelancer_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- NOTIFICATIONS
+-- ================= NOTIFICATIONS =================
 CREATE TABLE notifications (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     message TEXT,
-    is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- ADMIN USER
-INSERT INTO users (first_name, last_name, username, email, password, role)
-VALUES (
-'Admin',
-'User',
-'admin',
-'admin@gmail.com',
-'$2y$10$eImiTXuWVxfM37uY4JANjQ==',
-'admin'
+    is_read BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

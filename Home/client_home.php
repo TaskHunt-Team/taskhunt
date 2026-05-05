@@ -241,7 +241,7 @@
 
   </section>
   </div> </section> <div class="share-post-section">
-     <a href="../Home/Post a Job.html" class="lin"> <button class="share-btn">
+     <a href="../posts/Post a Job.html" class="lin"> <button class="share-btn">
           <i class="fa-solid fa-plus"></i> Share Post
       </button></a>
   </div>

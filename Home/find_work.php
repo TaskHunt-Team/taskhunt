@@ -754,8 +754,60 @@
         </aside>
 
         <main class="main-content" id="mainContent">
-            <div id="cardsContainer"></div>
-            <button class="view-more-btn" id="loadMoreBtn">Load More Jobs <i class="fas fa-arrow-down"></i></button>
+           <?php
+include '../config.php';
+
+$result = $conn->query("SELECT posts.*, users.first_name 
+FROM posts 
+JOIN users ON posts.client_id = users.id 
+ORDER BY posts.id DESC");
+
+while($job = $result->fetch_assoc()):
+?>
+
+<div class="job-card-modern">
+
+    <div class="card-header-row">
+        <div class="user-info">
+            <div class="avatar-sm"><i class="fas fa-user-tie"></i></div>
+            <div class="client-details">
+                <strong><?= $job['first_name'] ?></strong>
+                <div class="time-badge">⏳ New</div>
+            </div>
+        </div>
+        <span class="job-badge"><?= $job['type'] ?></span>
+    </div>
+
+    <h3 class="job-title"><?= $job['title'] ?></h3>
+
+    <p class="job-desc"><?= $job['description'] ?></p>
+
+    <div class="skills-tags">
+        <?php 
+        $tags = explode(",", $job['tags']);
+        foreach($tags as $tag){
+            echo "<span>#$tag</span>";
+        }
+        ?>
+    </div>
+
+    <div class="budget-chip">
+        💰 $<?= $job['budget'] ?>
+    </div>
+
+    <div class="action-bar">
+        <button class="action-btn-card"><i class="far fa-thumbs-up"></i> Interested</button>
+<a href="../proposals/proposal.php?id=<?= $job['id'] ?>">
+    <button class="action-btn-card">
+        <i class="far fa-paper-plane"></i> Apply Now
+    </button>
+</a>    </div>
+
+</div>
+
+<?php endwhile; ?>
+
+<button class="view-more-btn">Load More Jobs</button>
         </main>
     </div>
 
@@ -805,154 +857,7 @@
         </div>
     </footer>
 
-    <script>
-        // ---------- JOB DATA (enhanced) ----------
-        const allJobs = [
-            { title: "Excel Data Analysis & Power BI Dashboard", company: "Ahmed Samir", desc: "Clean sales data and create an interactive dashboard with KPIs.", tags: ["Excel", "Power BI"], price: 450, priceType: "Fixed", type: "Data & AI", exp: 4, timeAgo: "2h ago", verified: true },
-            { title: "Machine Learning Model for Prediction", company: "Sara Ali", desc: "Build predictive model using Python and Scikit-learn for churn.", tags: ["Python", "ML"], price: 1200, priceType: "Fixed", type: "Data & AI", exp: 6, timeAgo: "5h ago", verified: false },
-            { title: "Deep Learning Specialist - Image Recognition", company: "Ali Mohamed", desc: "Image classification using TensorFlow.", tags: ["TensorFlow", "CNN"], price: 45, priceType: "Hourly", type: "Data & AI", exp: 5, timeAgo: "1d ago", verified: false },
-            { title: "Full Stack Web App (React/Node)", company: "Mahmoud Tarek", desc: "E-commerce platform with MERN stack, payment integration.", tags: ["React", "Node.js"], price: 2500, priceType: "Fixed", type: "Development & IT", exp: 6, timeAgo: "3h ago", verified: true },
-            { title: "Backend API (Python/Django)", company: "Omar Hassan", desc: "RESTful APIs for mobile backend with auth.", tags: ["Django", "REST"], price: 30, priceType: "Hourly", type: "Development & IT", exp: 5, timeAgo: "6h ago", verified: false },
-            { title: "DevOps & AWS Deployment", company: "Nour Adel", desc: "CI/CD pipelines, Docker, AWS config.", tags: ["AWS", "Docker"], price: 800, priceType: "Fixed", type: "Development & IT", exp: 4, timeAgo: "12h ago", verified: false },
-            { title: "Social Media Graphics Design", company: "Farida Ahmed", desc: "10 Instagram & Facebook templates.", tags: ["Photoshop", "Canva"], price: 150, priceType: "Fixed", type: "Design & Creative", exp: 3, timeAgo: "4h ago", verified: false },
-            { title: "UX/UI for Mobile App", company: "Youssef Gamal", desc: "Fintech app design using Figma.", tags: ["Figma", "UI/UX"], price: 600, priceType: "Fixed", type: "Design & Creative", exp: 5, timeAgo: "2d ago", verified: true },
-            { title: "Digital Marketing Campaign", company: "Salma Reda", desc: "Manage Facebook & Google Ads campaigns.", tags: ["Ads", "Marketing"], price: 400, priceType: "Fixed", type: "Sales & Marketing", exp: 4, timeAgo: "1h ago", verified: false },
-            { title: "SEO Optimization E-commerce", company: "Ahmed Nabil", desc: "Improve Shopify store ranking on Google.", tags: ["SEO"], price: 25, priceType: "Hourly", type: "Sales & Marketing", exp: 3, timeAgo: "8h ago", verified: false },
-            { title: "Creative Content Writing (Blog)", company: "Nada Sherif", desc: "5 engaging tech blog articles.", tags: ["Copywriting"], price: 100, priceType: "Fixed", type: "Writing & Translation", exp: 3, timeAgo: "3h ago", verified: false },
-            { title: "Technical Translation EN-AR", company: "Mohamed Ibrahim", desc: "20-page software manual.", tags: ["Translation"], price: 200, priceType: "Fixed", type: "Writing & Translation", exp: 5, timeAgo: "5h ago", verified: false },
-            { title: "Virtual Assistant Daily Tasks", company: "Khaled Emad", desc: "Email, scheduling, data entry.", tags: ["Admin"], price: 15, priceType: "Hourly", type: "Admin & Support", exp: 3, timeAgo: "1h ago", verified: false },
-            { title: "Excel Data Entry & Formatting", company: "Amr Adel", desc: "Organize large datasets.", tags: ["Excel"], price: 100, priceType: "Fixed", type: "Admin & Support", exp: 4, timeAgo: "7h ago", verified: false },
-            { title: "Financial Analysis & Forecasting", company: "Mona Lotfy", desc: "Financial projections for business plan.", tags: ["Finance"], price: 500, priceType: "Fixed", type: "Finance & Accounting", exp: 6, timeAgo: "4h ago", verified: false },
-            { title: "Corporate Contract Review", company: "Hossam Reda", desc: "Legal partnership agreement review.", tags: ["Legal"], price: 1000, priceType: "Fixed", type: "Legal", exp: 10, timeAgo: "1w ago", verified: false },
-            { title: "Technical Recruitment for Startup", company: "Reem Hany", desc: "Source & interview developers.", tags: ["Recruitment"], price: 25, priceType: "Hourly", type: "HR & Training", exp: 5, timeAgo: "2d ago", verified: false }
-        ];
-
-        let visibleCount = 6;
-        let filteredJobs = [...allJobs];
-
-        function renderModernCards() {
-            const container = document.getElementById("cardsContainer");
-            if (!container) return;
-            container.innerHTML = "";
-            const toShow = filteredJobs.slice(0, visibleCount);
-            toShow.forEach(job => {
-                const card = document.createElement("div");
-                card.className = "job-card-modern";
-                const priceDisplay = job.priceType === 'Hourly' ? `$${job.price}/hr` : `$${job.price}`;
-                const badgeType = job.type === 'Data & AI' ? '📊 Data' : (job.type === 'Development & IT' ? '💻 Dev' : job.type);
-                card.innerHTML = `
-                <div class="card-header-row">
-                    <div class="user-info">
-                        <div class="avatar-sm"><i class="fas fa-user-tie"></i></div>
-                        <div class="client-details">
-                            <strong>${job.company}</strong> ${job.verified ? '<i class="fas fa-check-circle" style="color:#0077B8; font-size:12px;"></i>' : ''}
-                            <div class="time-badge">⏳ ${job.timeAgo}</div>
-                        </div>
-                    </div>
-                    <span class="job-badge">${badgeType}</span>
-                </div>
-                <h3 class="job-title">${job.title}</h3>
-                <p class="job-desc">${job.desc}</p>
-                <div class="skills-tags">${job.tags.map(t => `<span>#${t}</span>`).join('')}</div>
-                <div class="budget-chip">💰 ${priceDisplay} • ${job.exp}+ yrs exp</div>
-                <div class="action-bar">
-                    <button class="action-btn-card interested-btn"><i class="far fa-thumbs-up"></i> Interested</button>
-                    <button class="action-btn-card apply-now"><i class="far fa-paper-plane"></i> Apply Now</button>
-                </div>
-            `;
-                container.appendChild(card);
-            });
-            const loadBtn = document.getElementById("loadMoreBtn");
-            if (loadBtn) loadBtn.style.display = visibleCount >= filteredJobs.length ? "none" : "flex";
-            attachCardEvents();
-        }
-
-        function attachCardEvents() {
-            document.querySelectorAll('.interested-btn').forEach(btn => {
-                btn.removeEventListener('click', handleInterested);
-                btn.addEventListener('click', handleInterested);
-            });
-            document.querySelectorAll('.apply-now').forEach(btn => {
-                btn.removeEventListener('click', () => alert("✨ Application sent! The client will contact you soon."));
-                btn.addEventListener('click', () => alert("✨ Application sent! The client will contact you soon."));
-            });
-        }
-        function handleInterested(e) {
-            const btn = e.currentTarget;
-            const icon = btn.querySelector('i');
-            if (!btn.classList.contains('liked')) {
-                btn.classList.add('liked');
-                icon.className = "fas fa-thumbs-up";
-                btn.style.color = "#0077B8";
-                btn.innerHTML = '<i class="fas fa-thumbs-up"></i> Interested ✔';
-                alert("You've shown interest! The client will be notified.");
-            } else {
-                btn.classList.remove('liked');
-                icon.className = "far fa-thumbs-up";
-                btn.style.color = "var(--c3)";
-                btn.innerHTML = '<i class="far fa-thumbs-up"></i> Interested';
-            }
-        }
-
-        function filterAndRender() {
-            const type = document.getElementById("typeFilter").value;
-            const priceRange = document.getElementById("priceFilter").value;
-            const expRange = document.getElementById("expFilter").value;
-            const searchTerm = document.getElementById("searchKeyword")?.value.toLowerCase().trim() || "";
-            filteredJobs = allJobs.filter(job => {
-                if (type !== "all" && job.type !== type) return false;
-                if (priceRange !== "all") {
-                    let priceVal = typeof job.price === 'number' ? job.price : parseInt(job.price);
-                    let [min, max] = priceRange.split("-").map(Number);
-                    if (priceVal < min || (max !== 9999 && priceVal > max)) return false;
-                }
-                if (expRange !== "all") {
-                    let [minExp, maxExp] = expRange.split("-").map(Number);
-                    if (job.exp < minExp || job.exp > maxExp) return false;
-                }
-                if (searchTerm && !job.title.toLowerCase().includes(searchTerm) && !job.desc.toLowerCase().includes(searchTerm) && !job.company.toLowerCase().includes(searchTerm)) return false;
-                return true;
-            });
-            visibleCount = 6;
-            renderModernCards();
-        }
-
-        function loadMore() { visibleCount += 4; renderModernCards(); }
-
-        document.getElementById("typeFilter").addEventListener("change", filterAndRender);
-        document.getElementById("priceFilter").addEventListener("change", filterAndRender);
-        document.getElementById("expFilter").addEventListener("change", filterAndRender);
-        document.getElementById("searchBtn").addEventListener("click", filterAndRender);
-        document.getElementById("loadMoreBtn").addEventListener("click", loadMore);
-        document.getElementById("ctaCreateProfileBtn").addEventListener("click", () => alert("Create your freelancer profile now!"));
-        document.getElementById("searchKeyword").addEventListener("keypress", (e) => { if (e.key === "Enter") filterAndRender(); });
-
-        // sidebars toggle + subtype filter
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => { e.stopPropagation(); btn.parentElement.classList.toggle('active'); });
-        });
-        document.querySelectorAll('.sub-categories a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const subtype = link.getAttribute('data-subtype');
-                if (subtype) { document.getElementById("searchKeyword").value = subtype; filterAndRender(); }
-            });
-        });
-        // contact form
-        document.getElementById("contactForm")?.addEventListener("submit", (e) => { e.preventDefault(); alert("Message sent! We'll get back soon."); e.target.reset(); });
-        // CTA scroll logic
-        const cta = document.querySelector('.cta-fixed');
-        const footerElem = document.querySelector('footer');
-        window.addEventListener('scroll', () => {
-            if (footerElem && cta) {
-                const footerTop = footerElem.getBoundingClientRect().top;
-                const winH = window.innerHeight;
-                if (footerTop <= winH) { cta.classList.add('cta-stop'); cta.style.bottom = (winH - footerTop + 20) + 'px'; }
-                else { cta.classList.remove('cta-stop'); cta.style.bottom = '24px'; }
-            }
-        });
-        filterAndRender();
-    </script>
+ 
 </body>
 
 </html>

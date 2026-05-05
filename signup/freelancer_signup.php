@@ -1,15 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Sign Up | Join Our Community</title>
+    <title>Freelancer Sign Up | Join TaskHunt</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --primary:  #0090E0;
+            --primary: #0090E0;
             --primary-hover: #00A8FF;
             --bg-body: #ffffff;
             --text-main: #001e00;
@@ -17,6 +17,7 @@
             --border: #cbdfe9;
             --white: #ffffff;
             --shadow: 0 4px 12px rgba(0, 30, 0, 0.05);
+            --error: #dc3545;
         }
 
         * {
@@ -32,14 +33,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
             color: var(--text-main);
         }
 
         .signup-card {
             background: var(--white);
             width: 100%;
-            max-width: 480px;
+            max-width: 550px;
             padding: 40px;
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -55,7 +56,6 @@
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 8px;
-            letter-spacing: -0.5px;
         }
 
         .subtitle {
@@ -63,7 +63,6 @@
             font-size: 15px;
         }
 
-        /* Social Buttons */
         .social-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -87,19 +86,18 @@
         }
 
         .btn-social:hover {
-            background-color: #c3deec;
-            border-color: #d0e7f3;
+            background-color: #f0f7fb;
+            border-color: #0090E0;
         }
 
         .fa-google { color: #DB4437; }
         .fa-facebook-f { color: #0090E0; }
 
-        /* Divider */
         .divider {
             display: flex;
             align-items: center;
             margin: 24px 0;
-            color: #c1e0f1;
+            color: #9dbcca;
         }
 
         .divider::before, .divider::after {
@@ -115,7 +113,6 @@
             font-weight: 500;
         }
 
-        /* Form Styling */
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -139,29 +136,20 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 14px;
-            color: var(--text-main);
             outline: none;
             transition: all 0.2s;
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px #b7e3f9;
+            box-shadow: 0 0 0 3px #d0eefe;
         }
 
         textarea {
             resize: none;
-            height: 90px;
+            height: 80px;
         }
 
-        /* File Upload Styling */
-        input[type="file"] {
-            padding: 8px;
-            background: #bbdcee;
-            cursor: pointer;
-        }
-
-        /* Checkbox */
         .checkbox-group {
             display: flex;
             align-items: center;
@@ -177,7 +165,6 @@
             cursor: pointer;
         }
 
-        /* Submit Button */
         .btn-submit {
             width: 100%;
             padding: 14px;
@@ -208,21 +195,20 @@
             font-weight: 600;
         }
 
-        footer a:hover {
-            text-decoration: underline;
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
-            .signup-card {
-                padding: 30px 20px;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .social-container {
-                grid-template-columns: 1fr;
-            }
+            .signup-card { padding: 30px 20px; }
+            .form-row { grid-template-columns: 1fr; }
+            .social-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -230,53 +216,119 @@
 
 <div class="signup-card">
     <header>
-        <h1>Sign up as a client</h1>
-        <p class="subtitle">Create your profile and start earning</p>
+        <h1>Sign up as a Freelancer</h1>
+        <p class="subtitle">Create your freelancer account and start earning</p>
     </header>
 
     <div class="social-container">
-        <button class="btn-social">
+        <button class="btn-social" onclick="alert('Google login coming soon!')">
             <i class="fab fa-google"></i> Google
         </button>
-        <button class="btn-social">
+        <button class="btn-social" onclick="alert('Facebook login coming soon!')">
             <i class="fab fa-facebook-f"></i> Facebook
         </button>
     </div>
 
     <div class="divider">
-        <span>OR</span>
+        <span>OR SIGN UP WITH EMAIL</span>
     </div>
 
-    <form action="#">
+    <div id="errorMessage" class="error-message"></div>
+
+    <form id="signupForm" method="POST" action="process_signup.php">
+        <input type="hidden" name="user_type" value="freelancer">
+        
         <div class="form-row">
             <div class="form-group">
-                <input type="text" placeholder="First Name" required>
+                <input type="text" name="first_name" id="firstName" placeholder="First Name" required>
             </div>
             <div class="form-group">
-                <input type="text" placeholder="Last Name" required>
+                <input type="text" name="last_name" id="lastName" placeholder="Last Name" required>
             </div>
         </div>
-
+        
         <div class="form-group">
-            <input type="email" placeholder="Email Address" required>
+            <input type="text" name="username" id="username" placeholder="Username" required>
+        </div>
+        
+        <div class="form-group">
+            <input type="email" name="email" id="email" placeholder="Email Address" required>
         </div>
 
-        <div class="form-group">
-            <input type="password" placeholder="Password (at least 8 characters) " required>
+        <div class="form-row">
+            <div class="form-group">
+                <select name="skills" id="skills" required>
+                    <option value="" disabled selected>Select your primary skill</option>
+                    <option value="Web Developer">💻 Web Developer</option>
+                    <option value="Mobile App Developer">📱 Mobile App Developer</option>
+                    <option value="Frontend Developer">🎨 Frontend Developer</option>
+                    <option value="Backend Developer">⚙️ Backend Developer</option>
+                    <option value="Writing & Translation">✍️ Writing & Translation</option>
+                    <option value="UI/UX Designer">🎯 UI/UX Designer</option>
+                    <option value="Graphic Designer">🖼️ Graphic Designer</option>
+                    <option value="Digital Marketing">📈 Digital Marketing</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="country" id="country" placeholder="Country" required>
+            </div>
         </div>
-        <br>
+        
+        <div class="form-group">
+            <textarea name="bio" id="bio" placeholder="Tell us about yourself and your experience..."></textarea>
+        </div>
+        
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="Password (at least 8 characters)" required>
+        </div>
+        
+        <div class="form-group">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        </div>
+
         <label class="checkbox-group">
-            <input type="checkbox" required>
-           <span>I agree to the Terms of Service and<a href="../client-privacy.html" style="color: #00A8FF;"> Privacy Policy</a></span>
+            <input type="checkbox" id="termsCheckbox" required>
+            <span>I agree to the <a href="#" style="color: #00A8FF;">Terms of Service</a> and <a href="#" style="color: #00A8FF;">Privacy Policy</a></span>
         </label>
 
-        <button type="submit" class="btn-submit">Create My Account</button>
+        <button type="submit" class="btn-submit">Create My Freelancer Account</button>
     </form>
 
     <footer>
-        Already have an account? <a href="../login/login.html">Log In</a>
+        Already have an account? <a href="../login/login.php">Log In</a>
     </footer>
 </div>
+
+<script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        let password = document.getElementById('password').value;
+        let confirmPassword = document.getElementById('confirmPassword').value;
+        let errorDiv = document.getElementById('errorMessage');
+        
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '❌ Passwords do not match!';
+            return false;
+        }
+        
+        if (password.length < 8) {
+            e.preventDefault();
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '❌ Password must be at least 8 characters!';
+            return false;
+        }
+        
+        if (!document.getElementById('termsCheckbox').checked) {
+            e.preventDefault();
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '❌ You must agree to the Terms and Conditions!';
+            return false;
+        }
+        
+        errorDiv.style.display = 'none';
+    });
+</script>
 
 </body>
 </html>

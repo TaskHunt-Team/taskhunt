@@ -68,6 +68,7 @@
     <option value="Lead Generation Experts">Lead Generation Experts</option>
     <option value="Branding Experts">Branding Experts</option>
     <option value="Ecommerce Consultants">Ecommerce Consultants</option>
+    
 </select> <!-- ✅ مهم جداً -->
 
 <select id="priceFilter"> 
@@ -547,26 +548,27 @@
         const overlay = document.getElementById('overlay');
         const closeBtn = document.getElementById('closeDrawer');
 
-        document.querySelectorAll('.up-card').forEach(card => {
-            const openElements = [
-                card.querySelector('.avatar-img'),
-                card.querySelector('.view-profile-btn')
-            ];
+const allCards = document.querySelectorAll('.up-card');
 
-            openElements.forEach(el => {
-                el.addEventListener('click', (e) => {
-                    e.stopPropagation();
+allCards.forEach(card => {
+    const openElements = [
+        card.querySelector('.avatar-img'),
+        card.querySelector('.view-profile-btn')
+    ];
 
-                    document.getElementById('dName').innerText = card.dataset.name;
-                    document.getElementById('dType').innerText = card.dataset.type;
-                    document.getElementById('dImg').src = card.querySelector('.avatar-img').src;
+    openElements.forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
 
-                    drawer.classList.add('open');
-                    overlay.style.display = 'block';
-                });
-            });
+            document.getElementById('dName').innerText = card.dataset.name;
+            document.getElementById('dType').innerText = card.dataset.type;
+            document.getElementById('dImg').src = card.querySelector('.avatar-img').src;
+
+            drawer.classList.add('open');
+            overlay.style.display = 'block';
         });
-
+    });
+});
         function closeDrawer() {
             drawer.classList.remove('open');
             overlay.style.display = 'none';
@@ -583,9 +585,12 @@
 
         // ================= FILTER =================
         const typeFilter = document.getElementById('typeFilter');
-        const priceFilter = document.getElementById('priceFilter');
-        const expFilter = document.getElementById('expFilter');
-        const applyFilterBtn = document.getElementById('applyFilterBtn');
+const priceFilter = document.getElementById('priceFilter');
+const expFilter = document.getElementById('expFilter');
+const applyFilterBtn = document.getElementById('applyFilterBtn');
+
+const pageTitleElement = document.getElementById('pageTitle');
+const currentPage = pageTitleElement.innerText;
 
         let visibleCards = 6; // عدد الكروت الظاهرة
 
@@ -596,8 +601,9 @@
 
             let filtered = [];
 
-            document.querySelectorAll('.up-card').forEach(card => {
-                const type = card.dataset.type;
+const allCards = document.querySelectorAll('.up-card');
+allCards.forEach(card => {
+                        const type = card.dataset.type;
                 const price = parseInt(card.dataset.price, 10);
                 const exp = parseInt(card.dataset.exp, 10);
                 let show = true;
@@ -657,10 +663,11 @@
             visibleCards = 6;
             filterCards();
         });
-        applyFilterBtn.addEventListener('click', () => {
-            visibleCards = 6;
-            filterCards();
-        });
+       applyFilterBtn.addEventListener('click', () => {
+       visibleCards = 6;
+      pageTitleElement.innerText = typeFilter.value === 'all' ? currentPage : typeFilter.value;
+         filterCards();
+      });
 
 
         // ================= LOAD MORE =================

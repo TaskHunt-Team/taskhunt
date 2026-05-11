@@ -635,31 +635,26 @@
 
 <body>
 
-    <nav>
-        <div class="logo">
-            <a href="#"><img src="logo.png" alt="TaskHunt Logo"
-                    onerror="this.src='https://placehold.co/120x40?text=TaskHunt'"></a>
-        </div>
-        <ul class="nav-links">
-            <li><a href="#">Find Work</a></li>
-            <li><a href="#">Hire Talent</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-        <div class="user-menu-container">
-            <div class="notifications animated-bell">
-                <i class="fa-regular fa-bell bell-icon"></i>
-                <i class="fa-solid fa-circle bell-dot"></i>
-            </div>
-            <div class="profile-wrapper">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="nav-avatar">
-                <div class="nav-dropdown">
-                    <a href="#">Dashboard</a>
-                    <a href="#">Logout</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+<!-- NAVBAR -->
+  <nav class="nav">
+    <div class="logo">
+      <a href="../Home/home.html">
+        <img src="images/logo.png" alt="Logo">
+      </a>
+    </div>
+      <ul class="nav-links">
+        <li><a href="../Home/find_work.php">Find Work</a></li>
+        <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
+        <li><a href="#about-section">About</a></li>
+        <li><a href="#contact-section">Contact</a></li>
+      </ul>
+    <div class="user-menu-container">
+      <div class="auth-buttons">
+        <button style="color: rgb(0, 0, 0);" class="btn login-blue" onclick="window.location.href='../login/login.php'">Login</button>
+        <button class="btn signup-blue" onclick="window.location.href='../signup/asksignup.html'">Sign Up</button>
+      </div>
+    </div>
+  </nav>
 
     <section class="hero-mini">
         <h1>Find The <span>Perfect Job</span> For Your Skills</h1>

@@ -35,104 +35,175 @@
             overflow-x: hidden;
         }
 
-        /* NAVBAR */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 30px;
-            height: 70px;
-            background: #ffffff;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo img {
-            height: 42px;
-            margin-top: 8px;
-            object-fit: contain;
-        }
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .nav-links li a {
-            text-decoration: none;
-            color: var(--c4);
-            font-weight: 500;
-            font-size: 16px;
-            transition: 0.2s;
-        }
-        .nav-links li a:hover { color: var(--c3); }
-        .user-menu-container {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .notifications {
-            position: relative;
-            font-size: 22px;
-            color: var(--c4);
-            cursor: pointer;
-        }
-        .animated-bell:hover .bell-icon {
-            animation: bell-wobble 0.6s ease-in-out infinite;
-        }
-        .bell-dot {
-            position: absolute;
-            bottom: -3px;
-            right: -2px;
-            font-size: 8px;
-            color: #ff4d4f;
-        }
-        @keyframes bell-wobble {
-            0% { transform: rotate(0deg); }
-            15% { transform: rotate(12deg); }
-            30% { transform: rotate(-10deg); }
-            45% { transform: rotate(6deg); }
-            100% { transform: rotate(0deg); }
-        }
-        .nav-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid var(--c3);
-            cursor: pointer;
-            transition: 0.2s;
-            object-fit: cover;
-        }
-        .profile-wrapper {
-            position: relative;
-        }
-        .nav-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 50px;
-            background: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            border-radius: 12px;
-            min-width: 150px;
-            z-index: 200;
-        }
-        .profile-wrapper:hover .nav-dropdown {
-            display: block;
-        }
-        .nav-dropdown a {
-            display: block;
-            padding: 10px 18px;
-            color: var(--c4);
-            text-decoration: none;
-            font-size: 14px;
-            border-bottom: 1px solid #eee;
-        }
-        .nav-dropdown a:last-child { border: none; }
-        .nav-dropdown a:hover { background: #f8f9fa; color: var(--c3); }
+ /* NAVBAR */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+  height: 50px;
+  background: #ffffff;
+}
+/* NAVBAR FIX */
+
+.logo img {
+  height: 180px;
+  align-items: center;
+  padding-bottom: 25px;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+nav ul li a {
+  color: var(--c4);
+  text-decoration: none;
+  font-size: 18px;
+  transition: 0.3s;
+}
+nav ul li a:hover {
+  color: var(--c3);
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); 
+}
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+/* BUTTONS */
+
+.auth-buttons .btn {
+    width: 90px; 
+    height: 35px;
+    padding: 8px 0; 
+    text-align: center;
+    display: inline-block;
+    border-radius: 8px; 
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.login-blue {
+    background-color: #f0f6ff;
+    color: white;
+    border: none;
+}
+/* LOGIN BUTTON */
+
+.login-btn {
+    background-color: transparent;
+    color: var(--c3);
+    
+}
+.auth-buttons .btn:hover {
+    opacity: 0.8;
+    transform: translateY(-0.5px);
+}
+.signup-blue {
+  background-color: var(--c3);
+  color: white;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+
+.nav-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--c3);
+    transition: 0.3s ease;
+}
+
+.nav-avatar:hover {
+    transform: translateY(-3px);
+}
+
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* القائمة اللي بتفتح لما اقرب   من البروفايل */
+.nav-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    min-width: 140px;
+    z-index: 1000;
+}
+
+.profile-wrapper:hover .nav-dropdown {
+    display: block;
+}
+
+.nav-dropdown a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--c4);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-dropdown a:last-child { border: none; }
+
+.nav-dropdown a:hover {
+    background: #f8f9fa;
+    color: var(--c3);
+}
+
+/* ستايل الجرس والتنبيهات */
+.notifications {
+    position: relative;
+    font-size: 20px;
+    color: var(--c4);
+    cursor: pointer;
+}
+
+/* ت(Bell Wobble Animation) */
+.animated-bell:hover .bell-icon {
+    animation: bell-wobble 0.6s ease-in-out infinite; /* سرعة ونوع الحركة */
+}
+
+.bell-dot {
+    position: absolute;
+    bottom: -3px;
+    right: 50%; 
+    transform: translateX(50%);
+    font-size: 6px; /* حجم النقطة */
+    color: var(--c4); 
+}
+
+/* الاهتزاز */
+@keyframes bell-wobble {
+    0% { transform: rotate(0deg); }
+    15% { transform: rotate(10deg); }
+    30% { transform: rotate(-10deg); }
+    45% { transform: rotate(5deg); }
+    60% { transform: rotate(-5deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+}
 
         /* MAIN PROPOSAL SECTION */
         .proposal-container {
@@ -383,29 +454,35 @@
 </head>
 <body>
 
-<nav>
-    <div class="logo">
-        <a href="#"><img src="logo.png" alt="TaskHunt Logo" onerror="this.src='https://placehold.co/120x40?text=TaskHunt'"></a>
+<!-- NAVBAR -->
+  <nav class="nav">
+  <div class="logo">
+    <a href="../Home/home.html">
+      <img src="../Home/images/logo.png" alt="Logo">
+    </a>
+  </div>
+
+
+  <ul class="nav-links">
+    <li><a href="../work.html">Find Work</a></li>
+    <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
+    <li><a href="#about-section">About</a></li>
+    <li><a href="#contact-section">Contact</a></li>
+  </ul>
+<div class="user-menu-container">
+    <div class="notifications animated-bell">
+        <i class="fa-solid fa-bell bell-icon"></i>
+        <i class="fa-solid fa-circle bell-dot"></i>
     </div>
-    <ul class="nav-links">
-        <li><a href="#">Find Work</a></li>
-        <li><a href="#">Hire Talent</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-    </ul>
-    <div class="user-menu-container">
-        <div class="notifications animated-bell">
-            <i class="fa-regular fa-bell bell-icon"></i>
-            <i class="fa-solid fa-circle bell-dot"></i>
-        </div>
-        <div class="profile-wrapper">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="nav-avatar">
-            <div class="nav-dropdown">
-                <a href="#">Dashboard</a>
-                <a href="#">Logout</a>
-            </div>
+    
+    <div class="profile-wrapper">
+        <img src="client-avatar.png" alt="Profile" class="nav-avatar">
+        <div class="nav-dropdown">
+            <a href="../Dashboard/dash.client.html">Dashboard</a>
+            <a href="../Home/home.html">Logout</a>
         </div>
     </div>
+</div>
 </nav>
 
 <div class="proposal-container">

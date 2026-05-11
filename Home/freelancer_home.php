@@ -16,33 +16,24 @@
 <body>
 <!-- NAVBAR -->
   <nav class="nav">
-  <div class="logo">
-    <a href="../Home/home.html">
-      <img src="images/logo.png" alt="Logo">
-    </a>
-  </div>
-
-  <ul class="nav-links">
-    <li><a href="../work.html">Find Work</a></li>
-    <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
-    <li><a href="#about-section">About</a></li>
-    <li><a href="#contact-section">Contact</a></li>
-  </ul>
-<div class="user-menu-container">
-    <div class="notifications animated-bell">
-        <i class="fa-solid fa-bell bell-icon"></i>
-        <i class="fa-solid fa-circle bell-dot"></i>
+    <div class="logo">
+      <a href="../Home/home.html">
+        <img src="images/logo.png" alt="Logo">
+      </a>
     </div>
-    
-    <div class="profile-wrapper">
-        <img src="client-avatar.png" alt="Profile" class="nav-avatar">
-        <div class="nav-dropdown">
-            <a href="../Dashboard/freelancer.html">My Profile</a>
-            <a href="../Home/home.html">Logout</a>
-        </div>
+      <ul class="nav-links">
+        <li><a href="../Home/find_work.php">Find Work</a></li>
+        <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
+        <li><a href="#about-section">About</a></li>
+        <li><a href="#contact-section">Contact</a></li>
+      </ul>
+    <div class="user-menu-container">
+      <div class="auth-buttons">
+        <button style="color: rgb(0, 0, 0);" class="btn login-blue" onclick="window.location.href='../login/login.php'">Login</button>
+        <button class="btn signup-blue" onclick="window.location.href='../signup/asksignup.html'">Sign Up</button>
+      </div>
     </div>
-</div>
-</nav>
+  </nav>
            
 
   <section class="hero-section">

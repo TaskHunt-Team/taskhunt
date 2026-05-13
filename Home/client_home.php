@@ -24,7 +24,7 @@
 
 
   <ul class="nav-links">
-    <li><a href="../work.html">Find Work</a></li>
+    <li><a href="../Home/find_work.php">Find Work</a></li>
     <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
     <li><a href="#about-section">About</a></li>
     <li><a href="#contact-section">Contact</a></li>

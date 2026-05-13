@@ -641,8 +641,8 @@
                     onerror="this.src='https://placehold.co/120x40?text=TaskHunt'"></a>
         </div>
         <ul class="nav-links">
-            <li><a href="#">Find Work</a></li>
-            <li><a href="#">Hire Talent</a></li>
+            <li><a href="../Home/find_work.php">Find Work</a></li>
+            <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
         </ul>

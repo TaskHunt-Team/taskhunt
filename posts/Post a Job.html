@@ -798,48 +798,49 @@ margin-left: 65px;
             <p class="modal-subtitle">Share your project or services with the community</p>
         </div>
         
-        <form id="postForm">
-            <div class="field-group">
-                <label><i class="fas fa-tag"></i> I am looking to:</label>
-                <select id="postType" required>
-                    <option value="client">Hire a Freelancer (Client)</option>
-                    <option value="freelancer">Offer my Services (Freelancer)</option>
-                </select>
-            </div>
+<form method="POST" action="../posts/create_post.php">
 
-            <div class="field-group">
-                <label><i class="fas fa-pen"></i> Post Title</label>
-                <input type="text" id="postTitle" placeholder="e.g., UI/UX Designer for TaskHunt" required>
-            </div>
+    <div class="field-group">
+        <label><i class="fas fa-tag"></i> I am looking to:</label>
+        <select name="type" required>
+            <option value="client">Hire a Freelancer (Client)</option>
+            <option value="freelancer">Offer my Services (Freelancer)</option>
+        </select>
+    </div>
 
-            <div class="field-group">
-                <label><i class="fas fa-align-left"></i> Description</label>
-                <textarea id="postContent" placeholder="Describe the task or your expertise in detail..." rows="4" required></textarea>
-            </div>
-            
-            <div class="form-row">
-                <div class="field-group">
-                    <label><i class="fas fa-dollar-sign"></i> Budget </label>
-                    <input type="number" id="postBudget" placeholder="500" required>
-                </div>
-                <div class="field-group">
-                    <label><i class="fas fa-clock"></i> Woring Hours </label>
-                    <input type="number" id="postHours" placeholder="0-12" 
-                    min="0" max="12"
-                    oninput="if(value>12)value=12;if(value<0)value=0;">
-                </div>
-            </div>
+    <div class="field-group">
+        <label><i class="fas fa-pen"></i> Post Title</label>
+        <input type="text" name="title" placeholder="e.g., UI/UX Designer for TaskHunt" required>
+    </div>
 
-                <div class="field-group">
-                    <label><i class="fas fa-code"></i> Skills / Tags</label>
-                    <input type="text" id="postTags" placeholder="React, SQL, Figma">
-                </div>
-            
-            <button type="submit" class="submit-btn">
-                <span>Publish Post</span>
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </form>
+    <div class="field-group">
+        <label><i class="fas fa-align-left"></i> Description</label>
+        <textarea name="description" placeholder="Describe the task or your expertise..." rows="4" required></textarea>
+    </div>
+
+    <div class="form-row">
+        <div class="field-group">
+            <label><i class="fas fa-dollar-sign"></i> Budget</label>
+            <input type="number" name="budget" placeholder="500" required>
+        </div>
+
+        <div class="field-group">
+            <label><i class="fas fa-clock"></i> Working Hours</label>
+            <input type="number" name="hours" min="0" max="12" placeholder="0-12">
+        </div>
+    </div>
+
+    <div class="field-group">
+        <label><i class="fas fa-code"></i> Skills / Tags</label>
+        <input type="text" name="tags" placeholder="React, SQL, Figma">
+    </div>
+
+    <button type="submit" class="submit-btn">
+        <span>Publish Post</span>
+        <i class="fas fa-paper-plane"></i>
+    </button>
+
+</form>
     </div>
 </div>
           
@@ -905,137 +906,13 @@ margin-left: 65px;
 </footer>
 
 <script>
-const modal = document.getElementById("postModal");
-const openBtn = document.getElementById("openModal");
-const closeBtn = document.querySelector(".close-btn");
-const postForm = document.getElementById("postForm");
-const postsFeed = document.getElementById("postsFeed");
-
-// Modal Controls
-openBtn.onclick = () => modal.style.display = "block";
-closeBtn.onclick = () => modal.style.display = "none";
-window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; }
-
-/**
- * Creates and appends a post to the feed
- */
-function renderPost(type, title, description, budget, tags) {
-    const isClient = type === 'client';
-    const badgeText = isClient ? 'Hiring' : 'Service Offer';
-    const badgeClass = isClient ? 'badge-client' : 'badge-freelancer';
-
-    const postHTML = `
-        <article class="post-card">
-            <div class="post-header">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="avatar-placeholder" style="width:35px; height:35px;"><i class="fas fa-user"></i></div>
-                    <div>
-                        <strong style="font-size:14px; color: var(--c4);">TaskHunt User</strong>
-                        <div style="font-size:11px; color:#888;">Just now</div>
-                    </div>
-                </div>
-            <span class="badge ${badgeClass}" style="background-color: #0077B8;
-             color: white; padding: 4px 10px; border-radius: 6px;">${badgeText}</span>            
-             </div>
-            <h3 class="post-title">${title}</h3>
-            <p style="font-size:15px; color:#444; margin-bottom:15px; line-height:1.5;">${description}</p>
-            <span class="post-budget">Budget: $${budget}</span>
-            <div style="margin-top:10px; color:var(--c2); font-size:12px; font-weight:600;">
-                ${tags.split(',').map(tag => `<span>#${tag.trim()} </span>`).join('')}
-            </div>
-            <hr style="border:0; border-top:1px solid #eee; margin:20px 0;">
-            <div style="display:flex; gap:25px; font-size:14px; font-weight:600; color:var(--c3);">
-                <span style="cursor:pointer;"><i class="far fa-thumbs-up"></i> Interested</span>
-                <span style="cursor:pointer;"><i class="far fa-comment-dots"></i> ${isClient ? 'Apply Now' : 'Contact Me'}</span>
-            </div>
-        </article>
-        
-    `;
-    postsFeed.insertAdjacentHTML('afterbegin', postHTML);
-}
-
-
-// Handle form submission
-postForm.onsubmit = (e) => {
-    e.preventDefault();
-    renderPost(
-        document.getElementById("postType").value,
-        document.getElementById("postTitle").value,
-        document.getElementById("postContent").value,
-        document.getElementById("postBudget").value,
-        document.getElementById("postTags").value
-    );
-    modal.style.display = "none";
-    postForm.reset();
+document.getElementById("openModal").onclick = function() {
+    document.getElementById("postModal").style.display = "block";
 };
 
-// Default Landing Post
-renderPost('client', 'Welcome to the TaskHunt Feed',
-'This is where the community connects. Share your job requirements or showcase your unique skills.', '0', 'Community, Tasks');
-
-// ---(Like & Comments) ---
-
-postsFeed.addEventListener('click', (e) => {
-    
-    const likeBtn = e.target.closest('span');
-    if (likeBtn && likeBtn.innerText.includes('Interested')) {
-        const icon = likeBtn.querySelector('i');
-        
-        if (!likeBtn.classList.contains('active-like')) {
-            likeBtn.classList.add('active-like');
-            likeBtn.style.color = '#0077B8'; 
-            icon.classList.replace('far', 'fas'); // تحويل للأيقونة المليانة
-            icon.style.transform = 'scale(1.2)';
-        } 
-        else {
-            likeBtn.classList.remove('active-like');
-            likeBtn.style.color = 'var(--c3)';
-            icon.classList.replace('fas', 'far'); // رجوع للأيقونة المفرغة
-            icon.style.transform = 'scale(1)';
-        }
-        icon.style.transition = 'all 0.2s ease';
-    }
-
-    const commentBtn = e.target.closest('span');
-    if (commentBtn && (commentBtn.innerText.includes('Apply Now') || commentBtn.innerText.includes('Contact Me'))) {
-        let postCard = commentBtn.closest('.post-card');
-        let commentSection = postCard.querySelector('.comment-box');
-        
-        if (!commentSection) {
-            const boxHTML = `
-                <div class="comment-box" style="margin-top:15px; padding:15px; border-top:1px solid #eee; background:#f9f9f9; border-radius:8px;">
-                    <div class="old-comments" style="margin-bottom:10px;">
-                        <p style="font-style:italic; font-size:12px; color:#999;">No messages yet...</p>
-                    </div>
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" placeholder="Type your message..." style="flex:1; padding:10px; border:1px solid #ddd; border-radius:20px; outline:none;">
-                        <button class="send-btn" style="background:#0077B8; color:white; border:none; padding:5px 15px; border-radius:20px; cursor:pointer; font-weight:600;">Send</button>
-                    </div>
-                </div>`;
-            postCard.insertAdjacentHTML('beforeend', boxHTML);
-        } else {
-            commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
-        }
-    }
-
-    if (e.target.classList.contains('send-btn')) {
-        const input = e.target.previousElementSibling;
-        const container = e.target.closest('.comment-box').querySelector('.old-comments');
-        
-        if (input.value.trim() !== "") {
-            if(container.innerText.includes("No messages yet")) container.innerHTML = "";
-            
-            const newComment = `
-                <div style="margin-bottom:8px; background:white; padding:8px; border-radius:8px; border-left:3px solid #0077B8; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    <strong style="color:#333; font-size:12px;">You:</strong>
-                    <p style="margin:0; font-size:13px; color:#555;">${input.value}</p>
-                </div>`;
-            container.insertAdjacentHTML('beforeend', newComment);
-            input.value = "";
-        }
-    }
-});
+document.querySelector(".close-btn").onclick = function() {
+    document.getElementById("postModal").style.display = "none";
+};
 </script>
-
 </body>
 </html>

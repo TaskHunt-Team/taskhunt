@@ -22,6 +22,7 @@
     </a>
   </div>
 
+
   <ul class="nav-links">
     <li><a href="../work.html">Find Work</a></li>
     <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
@@ -37,10 +38,14 @@
     <div class="profile-wrapper">
         <img src="client-avatar.png" alt="Profile" class="nav-avatar">
         <div class="nav-dropdown">
-            <a href="../Dashboard/freelancer.html">My Profile</a>
+            <a href="../Dashboard/dash.client.html">Dashboard</a>
             <a href="../Home/home.html">Logout</a>
         </div>
     </div>
+</div>
+</nav>
+    
+   
 </div>
 </nav>
            
@@ -234,12 +239,12 @@
       </div>
 
 
- 
-   </section>
-   <a href="../Home/Trending.html" class="lin">
-  <div class="share-post-section">
-    <button class="share-btn"> View More</button>
-</div></a>
+  </section>
+  </div> </section> <div class="share-post-section">
+     <a href="../posts/Post a Job.html" class="lin"> <button class="share-btn">
+          <i class="fa-solid fa-plus"></i> Share Post
+      </button></a>
+  </div>
 
   <!-- ===== CLIENT TESTIMONIALS ===== -->
   <section class="testimonials-section">

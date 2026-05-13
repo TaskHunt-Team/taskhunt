@@ -708,28 +708,26 @@
 </head>
 <body>
 
-<nav class="navbar">
+<!-- NAVBAR -->
+  <nav class="nav">
     <div class="logo">
-        <a href="../Home/home.html">
-            <img src="images/logo.png" ">
-        </a>
+      <a href="../Home/home.html">
+        <img src="images/logo.png" alt="Logo">
+      </a>
     </div>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="../Home/work.html">Find Work</a></li>
+      <ul class="nav-links">
+        <li><a href="../Home/find_work.php">Find Work</a></li>
         <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="#about-section">About</a></li>
         <li><a href="#contact-section">Contact</a></li>
-        <li class="mobile-auth">
-            <button onclick="location.href='../../login/login.html'" class="btn login">Login</button>
-            <button onclick="location.href='../../signup/asksignup.html'" class="btn signup">Sign Up</button>
-        </li>
-    </ul>
-    <div class="auth-buttons">
-        <button onclick="location.href='../../login/login.html'" class="btn login">Login</button>
-        <button onclick="location.href='../../signup/asksignup.html'" class="btn signup">Sign Up</button>
+      </ul>
+    <div class="user-menu-container">
+      <div class="auth-buttons">
+        <button style="color: rgb(0, 0, 0);" class="btn login-blue" onclick="window.location.href='../login/login.php'">Login</button>
+        <button class="btn signup-blue" onclick="window.location.href='../signup/asksignup.html'">Sign Up</button>
+      </div>
     </div>
-    <div class="menu-toggle" id="menuToggle">☰</div>
-</nav>
+  </nav>
 
 <section class="hero-section">
     <div class="hero-wrapper">

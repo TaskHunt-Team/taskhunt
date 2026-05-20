@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskHunt | Client Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary-blue: #0077B8;
+            --primary-dark: #005a8c;
+            --primary-light: #e3f2fd;
+            --bg-color: #f7f9fc;
+            --text-dark: #1a2b3c;
+            --text-gray: #6c7a89;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --border-color: rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        /* NAVBAR STYLES */
+        nav.nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 30px;
+            height: 50px;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            align-items: center;
+            padding-bottom: px;
+        }
+
+        nav.nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav.nav ul li a {
+            color: #051923;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        nav.nav ul li a:hover {
+            color: #0077B8;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .auth-buttons .btn {
+            width: 90px;
+            height: 35px;
+            padding: 8px 0;
+            text-align: center;
+            display: inline-block;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .login-blue {
+            background-color: #f0f6ff;
+            color: white;
+            border: none;
+        }
+
+        .auth-buttons .btn:hover {
+            opacity: 0.8;
+            transform: translateY(-0.5px);
+        }
+
+        .signup-blue {
+            background-color: #0077B8;
+            color: white;
+        }
+
+        .user-menu-container {
+            display: flex;
+            align-items: center;
+        }
+
+        nav.nav .logo {
+            margin-bottom: 0;
+            gap: 8px;
+            height: 50px;
+            align-items: center;
+        }
+        .user-menu-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* المسافة بين الجرس والبروفايل */
+}
+
+.nav-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--c3);
+    transition: 0.3s ease;
+}
+
+.nav-avatar:hover {
+    transform: translateY(-3px);
+}
+
+.profile-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* القائمة اللي بتفتح لما اقرب   من البروفايل */
+.nav-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    min-width: 140px;
+    z-index: 1000;
+}
+
+.profile-wrapper:hover .nav-dropdown {
+    display: block;
+}
+
+.nav-dropdown a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--c4);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-dropdown a:last-child { border: none; }
+
+.nav-dropdown a:hover {
+    background: #f8f9fa;
+    color: var(--c3);
+}
+
+/* ستايل الجرس والتنبيهات */
+.notifications {
+    position: relative;
+    font-size: 20px;
+    color: var(--c4);
+    cursor: pointer;
+}
+
+/* ت(Bell Wobble Animation) */
+.animated-bell:hover .bell-icon {
+    animation: bell-wobble 0.6s ease-in-out infinite; /* سرعة ونوع الحركة */
+}
+
+.bell-dot {
+    position: absolute;
+    bottom: -3px;
+    right: 50%; 
+    transform: translateX(50%);
+    font-size: 6px; /* حجم النقطة */
+    color: var(--c4); 
+}
+
+/* الاهتزاز */
+@keyframes bell-wobble {
+    0% { transform: rotate(0deg); }
+    15% { transform: rotate(10deg); }
+    30% { transform: rotate(-10deg); }
+    45% { transform: rotate(5deg); }
+    60% { transform: rotate(-5deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+}
+
+        body {
+            background: linear-gradient(135deg, #f7f9fc 0%, #eef2f7 100%);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            padding-top: 60px;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #1a1f2e 0%, #0f1119 100%);
+        }
+
+        body.dark .sidebar {
+            background: rgba(26, 31, 46, 0.95);
+            border-right-color: rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark .main-content {
+            background: transparent;
+        }
+
+        body.dark .card,
+        body.dark .mini-card,
+        body.dark .search-area,
+        body.dark .user-profile,
+        body.dark .table-container,
+        body.dark .modal-content,
+        body.dark .freelancer-card,
+        body.dark .stat-card {
+            background: rgba(31, 37, 55, 0.95);
+            border-color: rgba(255, 255, 255, 0.05);
+            color: #e5e7eb;
+        }
+
+        body.dark .stat-value,
+        body.dark .stat-label,
+        body.dark td,
+        body.dark .welcome-msg p,
+        body.dark .job-title,
+        body.dark .freelancer-name,
+        body.dark .freelancer-title,
+        body.dark .table-header h3,
+        body.dark .info-text {
+            color: #e5e7eb;
+        }
+
+        body.dark .sidebar nav ul li {
+            color: #9ca3af;
+        }
+
+        body.dark .sidebar nav ul li.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        body.dark input,
+        body.dark select,
+        body.dark textarea {
+            background: #1f2937;
+            color: white;
+            border-color: #374151;
+        }
+
+        /* NAVBAR */
+        nav.nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 30px;
+            height: 60px;
+            background: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark nav.nav {
+            background: #1a1f2e;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        nav.nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav.nav ul li a {
+            color: #051923;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        body.dark nav.nav ul li a {
+            color: #e5e7eb;
+        }
+
+        nav.nav ul li a:hover {
+            color: #0077B8;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .user-menu-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--primary-blue);
+            transition: 0.3s ease;
+            object-fit: cover;
+        }
+
+        .nav-avatar:hover {
+            transform: translateY(-3px);
+        }
+
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            min-width: 140px;
+            z-index: 1000;
+        }
+
+        body.dark .nav-dropdown {
+            background: #1f2937;
+        }
+
+        .profile-wrapper:hover .nav-dropdown {
+            display: block;
+        }
+
+        .nav-dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark .nav-dropdown a {
+            color: #e5e7eb;
+            border-bottom-color: #374151;
+        }
+
+        .nav-dropdown a:last-child { border: none; }
+
+        .nav-dropdown a:hover {
+            background: #f8f9fa;
+            color: var(--primary-blue);
+        }
+
+        body.dark .nav-dropdown a:hover {
+            background: #2d3748;
+        }
+
+        .notifications {
+            position: relative;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        body.dark .notifications {
+            color: #e5e7eb;
+        }
+
+        .animated-bell:hover .bell-icon {
+            animation: bell-wobble 0.6s ease-in-out infinite;
+        }
+
+        .bell-dot {
+            position: absolute;
+            bottom: -3px;
+            right: -5px;
+            font-size: 8px;
+            color: var(--danger);
+        }
+
+        @keyframes bell-wobble {
+            0% { transform: rotate(0deg); }
+            15% { transform: rotate(12deg); }
+            30% { transform: rotate(-10deg); }
+            45% { transform: rotate(6deg); }
+            60% { transform: rotate(-4deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            padding:10px 24px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+        }
+
+        body.dark .sidebar {
+            background: rgba(26, 31, 46, 0.98);
+        }
+
+        .sidebar .logo {
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li, .lin {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            color: var(--text-gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .lin {
+            color: var(--text-gray);
+        }
+
+        nav ul li i, .lin i {
+            width: 22px;
+            font-size: 18px;
+        }
+
+        nav ul li.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 119, 184, 0.2);
+        }
+
+        nav ul li:hover:not(.active), .lin:hover {
+            background: rgba(0, 119, 184, 0.08);
+            color: var(--primary-blue);
+            transform: translateX(5px);
+        }
+
+        hr {
+            margin: 20px 0;
+            border-color: var(--border-color);
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 28px 36px;
+            overflow-y: auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-light);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-blue);
+            margin-bottom: 16px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Charts Row */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-card h3 {
+            margin-bottom: 16px;
+            font-size: 16px;
+            color: var(--text-gray);
+        }
+
+        canvas {
+            max-height: 250px;
+        }
+
+        /* Freelancers Grid */
+        .freelancers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .freelancer-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .freelancer-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .freelancer-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .freelancer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        .freelancer-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .freelancer-title {
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .freelancer-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .skill-tag {
+            background: var(--primary-light);
+            color: var(--primary-blue);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .freelancer-rating {
+            color: #ffc107;
+            margin: 10px 0;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-gray);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-open, .status-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-in-progress, .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-completed {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            padding: 6px 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.2s;
+            color: var(--text-gray);
+        }
+
+        .btn-icon:hover {
+            background: rgba(0, 119, 184, 0.1);
+            color: var(--primary-blue);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 28px;
+            padding: 32px;
+            width: 90%;
+            max-width: 550px;
+            animation: slideUp 0.3s;
+        }
+
+        body.dark .modal-content {
+            background: #1f2937;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            z-index: 1200;
+            animation: slideInRight 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        body.dark .toast {
+            background: #1f2937;
+            color: white;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notifications-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 100px;
+            background: white;
+            border-radius: 20px;
+            width: 320px;
+            max-height: 400px;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 100;
+            border: 1px solid var(--border-color);
+        }
+
+        body.dark .notifications-dropdown {
+            background: #1f2937;
+        }
+
+        .notifications-dropdown.show {
+            display: block;
+        }
+
+        .notification-item {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .notification-item.unread {
+            background: rgba(0, 119, 184, 0.08);
+        }
+
+        .dark-mode-toggle {
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--text-gray);
+            padding: 8px;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 1000;
+                height: 100%;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="nav">
+    <div class="logo">
+        <a href="../Home/home.html">
+            <img src="../logo.png" alt="Logo" onerror="this.src='https://placehold.co/120x40?text=TaskHunt'">
+        </a>
+    </div>
+    <ul class="nav-links">
+        <li><a href="../work.html">Find Work</a></li>
+        <li><a href="../Home/Hie Talent.html">Hire Talent</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="user-menu-container">
+        <div class="dark-mode-toggle" id="darkModeToggle">
+            <i class="fas fa-moon"></i>
+        </div>
+        <div class="notifications animated-bell" id="notificationBell">
+            <i class="fa-solid fa-bell bell-icon"></i>
+            <i class="fa-solid fa-circle bell-dot" id="notificationDot"></i>
+        </div>
+        <div class="profile-wrapper">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="nav-avatar">
+            <div class="nav-dropdown">
+                <a href="#" id="myProfileLink">My Profile</a>
+                <a href="../Home/home.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<aside class="sidebar">
+    <div class="logo">
+        <h2 style="color: var(--primary-blue);">📋 Client Hub</h2>
+    </div>
+    <nav>
+        <ul>
+            <li class="active" data-page="dashboard"><i class="fas fa-chart-line"></i> Dashboard</li>
+            <li data-page="my-jobs"><i class="fas fa-briefcase"></i> My Jobs</li>
+            <li data-page="freelancers"><i class="fas fa-users"></i> Find Freelancers</li>
+            <li data-page="hired"><i class="fas fa-user-check"></i> Hired</li>
+            <li data-page="payments"><i class="fas fa-credit-card"></i> Payments</li>
+            <li data-page="settings"><i class="fas fa-cog"></i> Settings</li>
+            <hr>
+            <li data-page="profile" id="profileNavBtn"><i class="fas fa-id-card"></i> My Profile</li>
+        </ul>
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div id="pageContent"></div>
+</main>
+
+<!-- Post Job Modal -->
+<div id="postJobModal" class="modal">
+    <div class="modal-content">
+        <h2 style="margin-bottom: 20px;">📢 Post New Job</h2>
+        <form id="postJobForm">
+            <div class="form-group">
+                <label>Job Title *</label>
+                <input type="text" id="jobTitle" required placeholder="e.g., Senior React Developer">
+            </div>
+            <div class="form-group">
+                <label>Description *</label>
+                <textarea id="jobDesc" rows="4" required placeholder="Describe the job requirements..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Budget ($) *</label>
+                <input type="number" id="jobBudget" required placeholder="500">
+            </div>
+            <div class="form-group">
+                <label>Category *</label>
+                <select id="jobCategory">
+                    <option>Web Development</option>
+                    <option>Mobile Development</option>
+                    <option>Design</option>
+                    <option>Writing</option>
+                    <option>Marketing</option>
+                    <option>Data Science</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Duration</label>
+                <select id="jobDuration">
+                    <option>Less than 1 week</option>
+                    <option>1-2 weeks</option>
+                    <option>1 month</option>
+                    <option>1-3 months</option>
+                    <option>3+ months</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" class="btn-primary">Post Job</button>
+                <button type="button" onclick="closeModal('postJobModal')" class="btn-outline">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Hire Modal -->
+<div id="hireModal" class="modal">
+    <div class="modal-content">
+        <h2>💼 Hire Freelancer</h2>
+        <form id="hireForm">
+            <div class="form-group">
+                <label>Freelancer</label>
+                <input type="text" id="hireFreelancerName" readonly>
+            </div>
+            <div class="form-group">
+                <label>Select Job</label>
+                <select id="hireJobSelect" required>
+                    <option value="">Choose a job...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Offer Amount ($)</label>
+                <input type="number" id="hireAmount" required placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="hireMessage" rows="3" placeholder="Explain project details..."></textarea>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" class="btn-primary">Send Offer</button>
+                <button type="button" onclick="closeModal('hireModal')" class="btn-outline">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="notificationsDropdown" class="notifications-dropdown"></div>
+
+<script>
+    // ==================== DATA STATE ====================
+    let currentPage = 'dashboard';
+    let selectedFreelancer = null;
+
+    let myJobs = [
+        { id: 1, title: 'E-commerce Website Development', description: 'Full e-commerce site with payment', budget: 3500, status: 'Open', category: 'Web Development', posted: '2024-03-10', proposals: 5 },
+        { id: 2, title: 'Mobile App UI/UX Design', description: 'Fitness app design', budget: 1200, status: 'In Progress', category: 'Design', posted: '2024-03-05', proposals: 8 },
+        { id: 3, title: 'Content Writing for Blog', description: '10 SEO articles', budget: 800, status: 'Open', category: 'Writing', posted: '2024-03-12', proposals: 12 }
+    ];
+
+    let hiredFreelancers = [
+        { id: 1, name: 'Alex Johnson', skill: 'React Developer', job: 'E-commerce Website Development', budget: 3500, startDate: '2024-03-15', status: 'In Progress', rating: 4.8, avatar: 'AJ' },
+        { id: 2, name: 'Maria Garcia', skill: 'UI Designer', job: 'Mobile App UI/UX Design', budget: 1200, startDate: '2024-03-10', status: 'In Progress', rating: 4.9, avatar: 'MG' }
+    ];
+
+    let freelancers = [
+        { id: 1, name: 'John Doe', title: 'Full Stack Developer', skills: ['React', 'Node.js', 'Python'], rating: 4.9, hourlyRate: 45, completedJobs: 127, avatar: 'JD' },
+        { id: 2, name: 'Sarah Smith', title: 'UI/UX Designer', skills: ['Figma', 'Adobe XD'], rating: 4.8, hourlyRate: 35, completedJobs: 89, avatar: 'SS' },
+        { id: 3, name: 'Mike Chen', title: 'WordPress Expert', skills: ['WordPress', 'PHP'], rating: 4.7, hourlyRate: 30, completedJobs: 156, avatar: 'MC' },
+        { id: 4, name: 'Emily Brown', title: 'Content Writer', skills: ['SEO', 'Blog Posts'], rating: 4.9, hourlyRate: 25, completedJobs: 234, avatar: 'EB' }
+    ];
+
+    let payments = [
+        { id: 1, freelancer: 'Alex Johnson', job: 'E-commerce Website', amount: 1500, date: '2024-03-20', status: 'Paid' },
+        { id: 2, freelancer: 'Maria Garcia', job: 'Mobile App Design', amount: 600, date: '2024-03-18', status: 'Paid' },
+        { id: 3, freelancer: 'John Doe', job: 'API Integration', amount: 800, date: '2024-03-25', status: 'Pending' }
+    ];
+
+    let notifications = [
+        { id: 1, message: 'New proposal received for "E-commerce Website"', time: '5 min ago', read: false },
+        { id: 2, message: 'Alex Johnson completed milestone 1', time: '1 hour ago', read: false },
+        { id: 3, message: 'Payment of $1500 was successful', time: '2 hours ago', read: false }
+    ];
+
+    let chartInstances = {};
+
+    // ==================== HELPER FUNCTIONS ====================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}" style="color: ${type === 'success' ? '#28a745' : '#dc3545'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    // ==================== BUSINESS LOGIC ====================
+    function postJob(jobData) {
+        const newJob = {
+            id: Date.now(),
+            title: jobData.title,
+            description: jobData.description,
+            budget: parseInt(jobData.budget),
+            status: 'Open',
+            category: jobData.category,
+            posted: new Date().toISOString().split('T')[0],
+            proposals: 0
+        };
+        myJobs.unshift(newJob);
+        showToast('✅ Job posted successfully!');
+        renderCurrentPage();
+    }
+
+    function deleteJob(id) {
+        const job = myJobs.find(j => j.id === id);
+        if (job && job.status === 'Open') {
+            if (confirm('Delete this job?')) {
+                myJobs = myJobs.filter(j => j.id !== id);
+                showToast('Job deleted');
+                renderCurrentPage();
+            }
+        } else {
+            showToast('Cannot delete an active job', 'error');
+        }
+    }
+
+    function viewProposals(jobId) {
+        const job = myJobs.find(j => j.id === jobId);
+        showToast(`📋 ${job.proposals} proposals received for "${job.title}"`);
+    }
+
+    function openHireModal(freelancer) {
+        selectedFreelancer = freelancer;
+        document.getElementById('hireFreelancerName').value = freelancer.name;
+        const jobSelect = document.getElementById('hireJobSelect');
+        jobSelect.innerHTML = '<option value="">Select a job</option>';
+        myJobs.filter(j => j.status === 'Open').forEach(job => {
+            jobSelect.innerHTML += `<option value="${job.id}">${job.title} ($${job.budget})</option>`;
+        });
+        openModal('hireModal');
+    }
+
+    function hireFreelancer(jobId, amount, message) {
+        const job = myJobs.find(j => j.id == jobId);
+        if (!job) return false;
+        
+        const newHire = {
+            id: Date.now(),
+            name: selectedFreelancer.name,
+            skill: selectedFreelancer.title,
+            job: job.title,
+            budget: parseInt(amount),
+            startDate: new Date().toISOString().split('T')[0],
+            status: 'In Progress',
+            rating: selectedFreelancer.rating,
+            avatar: selectedFreelancer.avatar
+        };
+        hiredFreelancers.push(newHire);
+        job.status = 'In Progress';
+        
+        notifications.unshift({
+            id: Date.now(),
+            message: `🎉 You hired ${selectedFreelancer.name} for "${job.title}"`,
+            time: 'Just now',
+            read: false
+        });
+        
+        showToast(`✨ Offer sent to ${selectedFreelancer.name}!`);
+        return true;
+    }
+
+    function completeJob(hireId) {
+        if (confirm('Mark as completed?')) {
+            const hire = hiredFreelancers.find(h => h.id === hireId);
+            if (hire) {
+                hire.status = 'Completed';
+                payments.unshift({
+                    id: Date.now(),
+                    freelancer: hire.name,
+                    job: hire.job,
+                    amount: hire.budget,
+                    date: new Date().toISOString().split('T')[0],
+                    status: 'Pending'
+                });
+                showToast(`🏆 Job completed! Payment of $${hire.budget} will be processed`);
+                renderCurrentPage();
+            }
+        }
+    }
+
+    // ==================== CHARTS ====================
+    function initCharts() {
+        const ctx1 = document.getElementById('jobsChart')?.getContext('2d');
+        const ctx2 = document.getElementById('spendingChart')?.getContext('2d');
+        
+        if (ctx1 && chartInstances.jobs) chartInstances.jobs.destroy();
+        if (ctx2 && chartInstances.spending) chartInstances.spending.destroy();
+        
+        const openJobs = myJobs.filter(j => j.status === 'Open').length;
+        const inProgress = hiredFreelancers.filter(h => h.status === 'In Progress').length;
+        const completed = hiredFreelancers.filter(h => h.status === 'Completed').length;
+        
+        if (ctx1) {
+            chartInstances.jobs = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Open Jobs', 'In Progress', 'Completed'],
+                    datasets: [{
+                        data: [openJobs, inProgress, completed],
+                        backgroundColor: ['#0077B8', '#ffc107', '#28a745'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+        
+        const monthlySpending = [1250, 2100, 1850, 3200, 2800, 4100];
+        if (ctx2) {
+            chartInstances.spending = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Spending ($)',
+                        data: monthlySpending,
+                        borderColor: '#0077B8',
+                        backgroundColor: 'rgba(0, 119, 184, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true }
+            });
+        }
+    }
+
+    // ==================== RENDER FUNCTIONS ====================
+    function renderDashboard() {
+        const openJobs = myJobs.filter(j => j.status === 'Open').length;
+        const activeProjects = hiredFreelancers.filter(h => h.status === 'In Progress').length;
+        const totalSpent = payments.filter(p => p.status === 'Paid').reduce((sum, p) => sum + p.amount, 0);
+        const totalProposals = myJobs.reduce((sum, j) => sum + j.proposals, 0);
+        
+        return `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-briefcase"></i></div><div class="stat-value">${myJobs.length}</div><div class="stat-label">Total Jobs</div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-file-signature"></i></div><div class="stat-value">${openJobs}</div><div class="stat-label">Open Positions</div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-user-check"></i></div><div class="stat-value">${activeProjects}</div><div class="stat-label">Active Projects</div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-dollar-sign"></i></div><div class="stat-value">$${totalSpent.toLocaleString()}</div><div class="stat-label">Total Spent</div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-value">${totalProposals}</div><div class="stat-label">Proposals Received</div></div>
+            </div>
+            <div class="charts-row">
+                <div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Jobs Status</h3><canvas id="jobsChart"></canvas></div>
+                <div class="chart-card"><h3><i class="fas fa-chart-line"></i> Monthly Spending</h3><canvas id="spendingChart"></canvas></div>
+            </div>
+            <div class="table-container">
+                <div class="table-header"><h3><i class="fas fa-clock"></i> Recent Activity</h3></div>
+                <div id="recentActivity"></div>
+            </div>
+        `;
+    }
+
+    function renderMyJobs() {
+        return `
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-briefcase"></i> My Jobs</h3>
+                    <button class="btn-primary" onclick="openModal('postJobModal')"><i class="fas fa-plus"></i> Post Job</button>
+                </div>
+                <table><thead><tr><th>Title</th><th>Category</th><th>Budget</th><th>Proposals</th><th>Status</th><th>Posted</th><th>Actions</th></tr></thead>
+                <tbody id="myJobsTableBody"></tbody></table>
+            </div>
+        `;
+    }
+
+    function renderFreelancers() {
+        return `
+            <div class="table-container">
+                <div class="table-header"><h3><i class="fas fa-users"></i> Find Freelancers</h3></div>
+                <div class="freelancers-grid" id="freelancersGrid"></div>
+            </div>
+        `;
+    }
+
+    function renderHired() {
+        return `
+            <div class="table-container">
+                <div class="table-header"><h3><i class="fas fa-user-check"></i> Hired Freelancers</h3></div>
+                <table><thead><tr><th>Freelancer</th><th>Skill</th><th>Project</th><th>Budget</th><th>Start Date</th><th>Status</th><th>Rating</th><th>Actions</th></tr></thead>
+                <tbody id="hiredTableBody"></tbody></table>
+            </div>
+        `;
+    }
+
+    function renderPayments() {
+        const totalPaid = payments.filter(p => p.status === 'Paid').reduce((sum, p) => sum + p.amount, 0);
+        const pending = payments.filter(p => p.status === 'Pending').reduce((sum, p) => sum + p.amount, 0);
+        return `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-value">$${totalPaid.toLocaleString()}</div><div class="stat-label">Total Paid</div></div>
+                <div class="stat-card"><div class="stat-icon"><i class="fas fa-clock"></i></div><div class="stat-value">$${pending.toLocaleString()}</div><div class="stat-label">Pending</div></div>
+            </div>
+            <div class="table-container">
+                <div class="table-header"><h3><i class="fas fa-credit-card"></i> Payment History</h3></div>
+                <table><thead><tr><th>Freelancer</th><th>Project</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
+                <tbody id="paymentsTableBody"></tbody></table>
+            </div>
+        `;
+    }
+
+    function renderSettings() {
+        return `
+            <div class="table-container">
+                <h3><i class="fas fa-building"></i> Company Settings</h3>
+                <form id="settingsForm" style="margin-top: 20px;">
+                    <div class="form-group"><label>Company Name</label><input type="text" id="companyName" value="Alex Parker Creative"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="companyEmail" value="alex@taskhunt.com"></div>
+                    <div class="form-group"><label>Phone</label><input type="text" id="companyPhone" value="+1 (555) 123-4567"></div>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </form>
+                <hr style="margin: 30px 0;">
+                <h3><i class="fas fa-bell"></i> Notifications</h3>
+                <div class="form-group"><label><input type="checkbox" checked> New proposals</label></div>
+                <div class="form-group"><label><input type="checkbox" checked> Milestone updates</label></div>
+                <div class="form-group"><label><input type="checkbox" checked> Payment confirmations</label></div>
+            </div>
+        `;
+    }
+
+    function renderProfile() {
+        const totalSpent = payments.filter(p => p.status === 'Paid').reduce((sum, p) => sum + p.amount, 0);
+        return `
+            <div style="background: white; border-radius: 28px; padding: 32px; border: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap;">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--primary-blue);">
+                    <div>
+                        <h2 style="font-size: 28px;">Alex Parker <span style="background: var(--primary-light); padding: 4px 12px; border-radius: 30px; font-size: 12px;">Verified Client</span></h2>
+                        <p style="color: var(--text-gray); margin-top: 8px;"><i class="fas fa-envelope"></i> alex.parker@taskhunt.com • <i class="fas fa-map-marker-alt"></i> San Francisco, CA</p>
+                        <p>⭐ 4.9 Rating • ${myJobs.length} Jobs Posted • $${totalSpent.toLocaleString()} Spent</p>
+                    </div>
+                </div>
+                <hr style="margin: 24px 0;">
+                <h3>About Me</h3>
+                <p style="margin-top: 12px; color: var(--text-gray);">Product manager & entrepreneur. I love building awesome digital products with top talent.</p>
+                <div style="margin-top: 24px;"><h3>Skills I Hire For</h3><div style="display: flex; gap: 12px; margin-top: 12px;"><span class="skill-tag">React</span><span class="skill-tag">UI/UX</span><span class="skill-tag">Python</span><span class="skill-tag">WordPress</span></div></div>
+            </div>
+        `;
+    }
+
+    // ==================== TABLE POPULATORS ====================
+    function populateMyJobsTable() {
+        const tbody = document.getElementById('myJobsTableBody');
+        if (tbody) {
+            tbody.innerHTML = myJobs.map(job => `
+                <tr>
+                    <td><strong>${job.title}</strong></td>
+                    <td>${job.category}</td>
+                    <td>$${job.budget}</td>
+                    <td>${job.proposals}</td>
+                    <td><span class="status-badge status-${job.status === 'Open' ? 'open' : 'in-progress'}">${job.status}</span></td>
+                    <td>${job.posted}</td>
+                    <td class="action-buttons">
+                        ${job.status === 'Open' ? `<button class="btn-icon" onclick="viewProposals(${job.id})"><i class="fas fa-users"></i></button>
+                        <button class="btn-icon" onclick="deleteJob(${job.id})"><i class="fas fa-trash"></i></button>` : '<span style="color:gray;">Active</span>'}
+                    </td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    function populateFreelancersGrid() {
+        const grid = document.getElementById('freelancersGrid');
+        if (grid) {
+            grid.innerHTML = freelancers.map(f => `
+                <div class="freelancer-card">
+                    <div class="freelancer-header"><div class="freelancer-avatar">${f.avatar}</div><div><div class="freelancer-name">${f.name}</div><div class="freelancer-title">${f.title}</div></div></div>
+                    <div class="freelancer-skills">${f.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
+                    <div class="freelancer-rating">${'★'.repeat(Math.floor(f.rating))} (${f.rating}) • ${f.completedJobs} jobs</div>
+                    <div><strong>$${f.hourlyRate}/hr</strong></div>
+                    <button class="btn-primary" style="margin-top: 12px;" onclick='openHireModal(${JSON.stringify(f).replace(/'/g, "&#39;")})'>Hire Now</button>
+                </div>
+            `).join('');
+        }
+    }
+
+    function populateHiredTable() {
+        const tbody = document.getElementById('hiredTableBody');
+        if (tbody) {
+            tbody.innerHTML = hiredFreelancers.map(hire => `
+                <tr>
+                    <td><strong>${hire.name}</strong></td>
+                    <td>${hire.skill}</td>
+                    <td>${hire.job}</td>
+                    <td>$${hire.budget}</td>
+                    <td>${hire.startDate}</td>
+                    <td><span class="status-badge status-${hire.status === 'In Progress' ? 'in-progress' : 'completed'}">${hire.status}</span></td>
+                    <td>${'★'.repeat(Math.floor(hire.rating))}</td>
+                    <td>${hire.status === 'In Progress' ? `<button class="btn-icon" onclick="completeJob(${hire.id})"><i class="fas fa-check-circle" style="color:#28a745;"></i></button>` : ''}</td>
+                </tr>
+            `).join('');
+        }
+    }
+
+    function populatePaymentsTable() {
+        const tbody = document.getElementById('paymentsTableBody');
+        if (tbody) {
+            tbody.innerHTML = payments.map(p => `
+                <tr><td><strong>${p.freelancer}</strong></td><td>${p.job}</td><td>$${p.amount}</td><td>${p.date}</td><td><span class="status-badge status-${p.status === 'Paid' ? 'open' : 'pending'}">${p.status}</span></td></tr>
+            `).join('');
+        }
+    }
+
+    function renderRecentActivity() {
+        const container = document.getElementById('recentActivity');
+        if (container) {
+            container.innerHTML = notifications.slice(0, 5).map(act => `
+                <div style="padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+                    <i class="fas fa-circle" style="font-size: 8px; color: var(--primary-blue); margin-right: 12px;"></i>
+                    ${act.message}<div style="font-size: 11px; color: var(--text-gray); margin-top: 4px;">${act.time}</div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // ==================== MAIN RENDER ====================
+    function renderCurrentPage() {
+        const contentDiv = document.getElementById('pageContent');
+        switch(currentPage) {
+            case 'dashboard':
+                contentDiv.innerHTML = renderDashboard();
+                renderRecentActivity();
+                setTimeout(initCharts, 50);
+                break;
+            case 'my-jobs':
+                contentDiv.innerHTML = renderMyJobs();
+                populateMyJobsTable();
+                break;
+            case 'freelancers':
+                contentDiv.innerHTML = renderFreelancers();
+                populateFreelancersGrid();
+                break;
+            case 'hired':
+                contentDiv.innerHTML = renderHired();
+                populateHiredTable();
+                break;
+            case 'payments':
+                contentDiv.innerHTML = renderPayments();
+                populatePaymentsTable();
+                break;
+            case 'settings':
+                contentDiv.innerHTML = renderSettings();
+                document.getElementById('settingsForm')?.addEventListener('submit', (e) => { e.preventDefault(); showToast('Settings saved!'); });
+                break;
+            case 'profile':
+                contentDiv.innerHTML = renderProfile();
+                break;
+        }
+        document.querySelectorAll('.sidebar nav ul li').forEach(li => li.classList.remove('active'));
+        const activeLink = document.querySelector(`.sidebar nav ul li[data-page="${currentPage}"]`);
+        if (activeLink) activeLink.classList.add('active');
+    }
+
+    // ==================== EVENT LISTENERS ====================
+    document.getElementById('postJobForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        postJob({
+            title: document.getElementById('jobTitle').value,
+            description: document.getElementById('jobDesc').value,
+            budget: document.getElementById('jobBudget').value,
+            category: document.getElementById('jobCategory').value
+        });
+        closeModal('postJobModal');
+        e.target.reset();
+    });
+
+    document.getElementById('hireForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const jobId = document.getElementById('hireJobSelect').value;
+        const amount = document.getElementById('hireAmount').value;
+        const message = document.getElementById('hireMessage').value;
+        if (!jobId) { showToast('Select a job', 'error'); return; }
+        if (hireFreelancer(jobId, amount, message)) {
+            closeModal('hireModal');
+            renderCurrentPage();
+        }
+    });
+
+    document.querySelector('.sidebar')?.addEventListener('click', (e) => {
+        const li = e.target.closest('li');
+        if (!li) return;
+        const page = li.dataset.page;
+        if (page) {
+            currentPage = page;
+            renderCurrentPage();
+        }
+    });
+
+    document.getElementById('myProfileLink')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentPage = 'profile';
+        renderCurrentPage();
+    });
+
+    document.getElementById('darkModeToggle')?.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        const icon = document.querySelector('#darkModeToggle i');
+        if (icon) icon.classList.toggle('fa-moon');
+        if (icon) icon.classList.toggle('fa-sun');
+    });
+
+    document.getElementById('notificationBell')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dropdown = document.getElementById('notificationsDropdown');
+        dropdown.classList.toggle('show');
+        dropdown.innerHTML = notifications.map(n => `<div class="notification-item ${!n.read ? 'unread' : ''}"><div><strong>${n.message}</strong></div><div style="font-size: 11px;">${n.time}</div></div>`).join('');
+        document.getElementById('notificationDot')?.style.setProperty('opacity', notifications.filter(n => !n.read).length ? '1' : '0.3');
+    });
+
+    document.addEventListener('click', () => {
+        document.getElementById('notificationsDropdown')?.classList.remove('show');
+    });
+
+    // Make functions global
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.deleteJob = deleteJob;
+    window.viewProposals = viewProposals;
+    window.openHireModal = openHireModal;
+    window.completeJob = completeJob;
+
+    // Initial render
+    renderCurrentPage();
+</script>
+</body>
+</html>
